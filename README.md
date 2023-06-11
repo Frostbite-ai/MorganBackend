@@ -1,4 +1,5 @@
-# Morgan Stanley CodeToGive Team-17 Backend
+```
+## Morgan Stanley CodeToGive Team-17 Backend
 
 This is a resilient backend service built using Node.js, Express.js, MongoDB, and a variety of other powerful technologies including bcrypt for secure password handling. It is designed to handle various tasks efficiently and flexibly, providing a reliable backbone for any web application.
 
@@ -14,39 +15,36 @@ Ensure you have Node.js and npm (Node Package Manager) installed on your system.
 
 1. **Clone the repository** - Pull the code from the master branch of the GitHub repository to your local machine.
 2. **Navigate to the project directory** - Once you've cloned the repository, use the command line to navigate to the root directory of the project.
-3. **Set up environment variables** - Create a `.env` file in the root directory. This file will house all your environment variables. Populate it with the following details:
-   - `MONGO_URI` - This is the URL for your MongoDB database
-   - `PORT` - This is the port number your application will run on
-   - `SECRET_KEY` - This is your secret key for JSON Web Token (JWT) authentication
+3. **Set up environment variables** - Create a `.env` and `.env.local` file in the root directory. These files will house all your environment variables. Populate them with the following details:
+
+   **.env**
+
+   ```
+   DB_URL="mongodb://localhost:27017/morganstanley23"
+   MONGODB_ATLAS_URI="mongodb://localhost:27017/morganstanley23"
+   PORT=3000
+   SECRET_KEY="<your_secret_key>"
+   VAPID_SUBJECT="mailto:<your_email>"
+   VAPID_PUBLIC_KEY="<your_vapid_public_key>"
+   VAPID_PRIVATE_KEY="<your_vapid_private_key>"
+   export NODE_ENV=development
+   ```
+
+   **.env.local**
+
+   ```
+   VITE_SERVER_ADDRESS="http://localhost:3000"
+   VITE_VAPID_PUBLIC_KEY="<your_vapid_public_key>"
+   export NODE_ENV=development
+   ```
+
+   Replace `<your_secret_key>`, `<your_email>`, `<your_vapid_public_key>`, and `<your_vapid_private_key>` with your own values.
+
 4. **Install dependencies** - Use npm to install all the project's dependencies.
 5. **Start the server** - Run the server using the npm script 'dev'.
-6. **Verify the setup** - Open a web browser and visit http://localhost:<Port Number> to confirm the application is running correctly. Replace `<Port Number>` with the number you assigned to the `PORT` variable in your `.env` file.
+6. **Verify the setup** - Open a web browser and visit http://localhost:3000 to confirm the application is running correctly.
 
-### Package.json Information
+## API Documentation
 
-This project has a `package.json` file which holds various metadata relevant to the project. It includes the name, version, scripts, and dependencies used in the project. Below is an example of what it might look like:
-
-```json
-{
-  "name": "morganstanley-hack-backend",
-  "version": "0.1.0",
-  "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon"
-  },
-  "dependencies": {
-    "bcrypt": "^5.1.0",
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.20.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0",
-    "mongodb": "4.1",
-    "mongoose": "^6.8.1",
-    "nodemon": "^2.0.22",
-    "uuid": "^9.0.0",
-    "web-push": "^3.6.1"
-  }
-}
+For more information on the available API endpoints, please visit the [API documentation](https://frostbite-ai.github.io/MorganBackend/).
 ```
