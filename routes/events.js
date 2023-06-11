@@ -6,7 +6,7 @@ const authorizeAdmin = require("../middleware/adminAuth")
 const { v4: uuidv4 } = require("uuid")
 const User = require("../models/User")
 
-// create new Event { without any attendance and all !! }
+// create new Event !!
 router.post("/createEvent", authorizeAdmin, async (req, res) => {
   const details = req.body
 
@@ -73,19 +73,6 @@ router.put("/editEvent", authorizeAdmin, async (req, res) => {
       imageUrl: details.imageUrl,
     })
 
-    // eventId:eventId,
-    //       category:category,
-    //       location:location,
-    //       eventName:eventName,
-    //       eventDuration:eventDuration,
-    //       eventDetails:eventDetails,
-    //       attended:location1.state.attended,
-    //       registered:location1.state.registered,
-    //       followedUp:location1.state.followUp,
-    //       feedback:location1.state.feedback,
-    //       imageUrl:location1.state.imageUrl
-
-    // Find the event by ID and update it with the new data
     const updatedEvent = await Event.findByIdAndUpdate(_id, updatedEventData, {
       new: true,
     })
@@ -100,13 +87,19 @@ router.put("/editEvent", authorizeAdmin, async (req, res) => {
   }
 })
 
-// data retrival routes { all admin side }
+// Create a separate async function to retrieve all events
+async function getAllEvents() {
+  try {
+    return await Event.find()
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
 
-// get all events
-// to get all events !!
+// Route handler for getting all events with the "result" key in the response object
 router.get("/", async (req, res) => {
   try {
-    const result = await Event.find()
+    const result = await getAllEvents()
     if (result.length > 0) {
       res.status(200).json({ result: result })
     } else {
@@ -117,11 +110,10 @@ router.get("/", async (req, res) => {
   }
 })
 
-// get all events , in objects format !! added by vaibhav for events list and event page
+// Route handler for getting all events as an array in the response
 router.get("/list", async (req, res) => {
   try {
-    const result = await Event.find()
-
+    const result = await getAllEvents()
     if (result.length > 0) {
       res.status(200).json(result)
     } else {
@@ -201,46 +193,19 @@ router.get("/registeredList", authorizeAdmin, async (req, res) => {
   }
 })
 
-// get user feedbacks based on sessions
-router.get("/feedbacks", authorizeAdmin, async (req, res) => {
-  try {
-    const eventId = req.body.eventId
-    const result = await Event.find({ _id: eventId })
-    if (result.length > 0) {
-      res.status(200).json({ result: result[0].feedback })
-    } else {
-      res.status(200).json({ result: [] })
-    }
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
-})
-
-// group sessions based on sessionIds and display there
-// attendance , register and followed up count !!
 router.get("/group/attendance", authorizeAdmin, async (req, res) => {
   try {
     const events = await Event.find()
-    if (events.length > 0) {
-      // console.log(users);
-      const result = processData4(events)
-      res.status(200).json({ result: result })
-      // using the result property of the json object returned we can
-      // have that object send as prop to the component of chart.js
-    } else {
-      res.status(200).json({ result: {} })
-    }
+    const result = events.length > 0 ? groupSessionsByAttendance(events) : {}
+    res.status(200).json({ result: result })
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
 })
 
-// key : sessionId
-// value : eventSummary !!
-function processData4(events) {
-  const result = {}
+function groupSessionsByAttendance(events) {
+  const sessionAttendance = {}
 
-  // Iterate over each event
   events.forEach((event) => {
     const eventId = event._id
     const eventName = event.eventName
@@ -248,7 +213,6 @@ function processData4(events) {
     const registeredCount = event.registered.length
     const followedUpCount = event.followedUp.length
 
-    // Create an object with the desired values
     const eventSummary = {
       eventName,
       attendedCount,
@@ -256,11 +220,10 @@ function processData4(events) {
       followedUpCount,
     }
 
-    // Add the eventSummary object to the result using sessionId as the key
-    result[eventId] = eventSummary
+    sessionAttendance[eventId] = eventSummary
   })
 
-  return result
+  return sessionAttendance
 }
 
 module.exports = router
