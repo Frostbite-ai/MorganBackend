@@ -1,4 +1,3 @@
-```
 ## Morgan Stanley CodeToGive Team-17 Backend
 
 This is a resilient backend service built using Node.js, Express.js, MongoDB, and a variety of other powerful technologies including bcrypt for secure password handling. It is designed to handle various tasks efficiently and flexibly, providing a reliable backbone for any web application.
@@ -19,6 +18,8 @@ Ensure you have Node.js and npm (Node Package Manager) installed on your system.
 
    **.env**
 
+
+
    ```
    DB_URL="mongodb://localhost:27017/morganstanley23"
    MONGODB_ATLAS_URI="mongodb://localhost:27017/morganstanley23"
@@ -30,7 +31,10 @@ Ensure you have Node.js and npm (Node Package Manager) installed on your system.
    export NODE_ENV=development
    ```
 
-   **.env.local**
+   
+**.env.local**
+
+
 
    ```
    VITE_SERVER_ADDRESS="http://localhost:3000"
@@ -38,7 +42,8 @@ Ensure you have Node.js and npm (Node Package Manager) installed on your system.
    export NODE_ENV=development
    ```
 
-   Replace `<your_secret_key>`, `<your_email>`, `<your_vapid_public_key>`, and `<your_vapid_private_key>` with your own values.
+ 
+Replace `<your_secret_key>`, `<your_email>`, `<your_vapid_public_key>`, and `<your_vapid_private_key>` with your own values.
 
 4. **Install dependencies** - Use npm to install all the project's dependencies.
 5. **Start the server** - Run the server using the npm script 'dev'.
@@ -47,4 +52,3 @@ Ensure you have Node.js and npm (Node Package Manager) installed on your system.
 ## API Documentation
 
 For more information on the available API endpoints, please visit the [API documentation](https://frostbite-ai.github.io/MorganBackend/).
-```
